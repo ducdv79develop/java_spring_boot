@@ -6,6 +6,7 @@ import com.local.ducdv.exception.AppException;
 import com.local.ducdv.model.UserModel;
 import com.local.ducdv.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,17 +32,18 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    public String create() {
+    public String create(Model model) {
+        model.addAttribute("user", new User());
         return "user/create";
     }
 
-    @PostMapping("/store")
-    public String store(@RequestBody @Valid UserDto userDto, BindingResult result) {
+    @PostMapping(value = "/create")
+    public String store(@Valid User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "user/create";
         }
 
-        Boolean status = userService.storeUser(userDto, null);
+        Boolean status = userService.storeUser(user, null);
         if (status) {
             return "redirect:/user";
         }
@@ -50,7 +52,7 @@ public class UserController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
-        UserModel user = userService.getUserByID(id);
+        User user = userService.getUserByID(id);
         if (user == null) {
             throw new AppException(404, "Not Found");
         }
@@ -59,12 +61,25 @@ public class UserController {
         return "user/edit";
     }
 
-    @PostMapping("/update")
-    public String update(@Valid User user, BindingResult result) {
+    @PostMapping("/edit/{id}")
+    public String update(@Valid User user, BindingResult result, @PathVariable Integer id, Model model) {
         if (result.hasErrors()) {
-            return "user/create";
+            return "user/edit";
         }
 
-        return "redirect:/user";
+        Boolean status = userService.storeUser(user, null);
+        if (status) {
+            return "redirect:/user";
+        }
+        throw new AppException(500, "Server Error");
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, Model model) {
+        Boolean status = userService.deleteUser(id);
+        if (status) {
+            return "redirect:/user";
+        }
+        throw new AppException(500, "Server Error");
     }
 }

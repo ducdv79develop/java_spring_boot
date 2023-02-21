@@ -2,15 +2,19 @@ package com.local.ducdv.dto;
 
 import com.local.ducdv.entity.User;
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class UserDto {
-    @NotEmpty(message = "name is required!")
-    @Max(value = 255, message = "name is max 255 characters!")
-    public String name;
+    @NotEmpty(message = "{validations.user.name.required}")
+    @Size(max = 255, message = "{validations.user.name.max}")
+    private String name;
 
-    @NotEmpty(message = "email is required!")
-    @Email
-    @Max(value = 255, message = "email is max 255 characters!")
+    @NotEmpty(message = "{validations.user.email.required}")
+    @Email(message = "{validations.user.email.email}")
+    @Size(max = 255, message = "{validations.user.email.max}")
     public String email;
 
     public User toEntity() {

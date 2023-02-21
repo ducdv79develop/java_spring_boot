@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head th:replace="layouts/header.html :: header('Create User')"></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layouts/header.html :: header(#{user.create})"></head>
 <body>
 <div class="container">
-    <h1 class="text-center mb-3">Create User</h1>
+    <h1 class="text-center mb-3" th:text="#{user.create}"></h1>
     <div class="card">
         <div class="card-body center-block">
-            <form class="row" method="post" th:action="@{/user/store}" content="text/html">
+            <form class="row" method="post" th:action="@{/user/create}" th:object="${user}">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="email" placeholder="Enter name">
+                        <label for="name" th:text="#{user.form.name}"></label>
+                        <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Enter name">
+                        <p class="is-invalid" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter email">
+                        <label for="email" th:text="#{user.form.email}"></label>
+                        <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Enter email">
+                        <p class="is-invalid" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
                     </div>
                 </div>
                 <div class="col-6">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <a th:href="@{/user}" class="btn btn-secondary">Back</a>
+                    <button type="submit" class="btn btn-primary" th:text="#{common.form.submit}"></button>
+                    <a th:href="@{/user}" class="btn btn-secondary" th:text="#{common.form.back}"></a>
                 </div>
             </form>
         </div>

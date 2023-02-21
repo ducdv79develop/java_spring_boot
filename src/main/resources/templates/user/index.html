@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-<head th:replace="layouts/header.html :: header('Lists Users')"></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layouts/header.html :: header(#{user.list})"></head>
 <body>
 
 <div class="container">
     <!-- Content here -->
-    <h1 class="text-center">Lists Users</h1>
+    <h1 class="text-center" th:text="#{user.list}"></h1>
     <div class="col-12 text-right pr-0 mb-3">
-        <a th:href="@{/user/create}" class="btn btn-outline-success">Create</a>
+        <a th:href="@{/user/create}" class="btn btn-outline-success" th:text="#{user.create}"></a>
     </div>
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Password</th>
-            <th scope="col">Action</th>
+            <th scope="col" th:text="#{user.form.name}"></th>
+            <th scope="col" th:text="#{user.form.email}"></th>
+            <th scope="col" th:text="#{user.form.password}"></th>
+            <th scope="col" th:text="#{common.form.action}"></th>
         </tr>
         </thead>
         <tbody>
@@ -25,7 +25,10 @@
             <td th:text="${user.name}"></td>
             <td th:text="${user.email}"></td>
             <td th:text="${user.password}"></td>
-            <td><a th:href="@{/user/edit/{id}(id=${user.id})}">Edit</a></td>
+            <td>
+                <a th:href="@{/user/edit/{id}(id=${user.id})}" th:text="#{common.form.edit}"></a>
+                <a style="color: red" th:href="@{/user/delete/{id}(id=${user.id})}" th:text="#{common.form.delete}"></a>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -27,33 +27,40 @@ public class UserService {
         return userModels;
     }
 
-    public UserModel getUserByID(Integer id) {
-        User user = userRepository.findById(id).orElse(null);
-        if (user != null) {
-            return new UserModel(user);
-        }
-        return null;
+    public User getUserByID(Integer id) {
+        return userRepository.findById(id).orElse(null);
     }
 
-    public Boolean storeUser(UserDto userDto, Integer id) {
+    public Boolean storeUser(User user, Integer id) {
         try {
-            User user;
+            User userSave;
             if (id != null) {
-                user = userRepository.findById(id).orElse(null);
-                if (user == null) {
+                userSave = userRepository.findById(id).orElse(null);
+                if (userSave == null) {
                     throw new AppException(404, "Not Found");
                 }
-                user.setName(userDto.name);
-                user.setEmail(userDto.email);
+                userSave.setName(user.getName());
+                userSave.setEmail(user.getEmail());
             } else {
-                user = userDto.toEntity();
+                userSave = user;
             }
-            userRepository.save(user);
+            userRepository.save(userSave);
             return true;
 
         } catch (Exception e) {
 
             return false;
         }
+    }
+
+    public Boolean deleteUser(Integer id) {
+        User user = userRepository.findById(id).orElse(null);
+
+        if (user == null) {
+            return false;
+        }
+
+        userRepository.delete(user);
+        return true;
     }
 }
