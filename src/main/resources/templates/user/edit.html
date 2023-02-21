@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="layouts/header.html :: header('Edit User')"></head>
+<body>
+<div class="container">
+    <h1 class="text-center">Edit User</h1>
+    <div class="card">
+        <div class="card-body center-block">
+            <form class="row" method="post" th:action="@{/user/update}">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" th:value="${user.name}" id="name" name="email" placeholder="Enter name">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" th:value="${user.email}" id="email" placeholder="Enter email">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a th:href="@{/user}" class="btn btn-secondary">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="layouts/footer.html :: footer"></footer>
+</body>
+</html>

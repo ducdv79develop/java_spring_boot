@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="layouts/header.html :: header('Lists Users')"></head>
+<body>
+
+<div class="container">
+    <!-- Content here -->
+    <h1 class="text-center">Lists Users</h1>
+    <div class="col-12 text-right pr-0 mb-3">
+        <a th:href="@{/user/create}" class="btn btn-outline-success">Create</a>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Password</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td scope="row" th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.password}"></td>
+            <td><a th:href="@{/user/edit/{id}(id=${user.id})}">Edit</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer th:replace="layouts/footer.html :: footer"></footer>
+</body>
+</html>
