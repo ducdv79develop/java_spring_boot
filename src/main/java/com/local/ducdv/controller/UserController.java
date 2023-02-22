@@ -1,12 +1,10 @@
 package com.local.ducdv.controller;
 
-import com.local.ducdv.dto.UserDto;
 import com.local.ducdv.entity.User;
 import com.local.ducdv.exception.AppException;
 import com.local.ducdv.model.UserModel;
 import com.local.ducdv.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,8 +41,8 @@ public class UserController {
             return "user/create";
         }
 
-        Boolean status = userService.storeUser(user, null);
-        if (status) {
+        User userSave = userService.storeUser(user, null);
+        if (userSave !=  null) {
             return "redirect:/user";
         }
         throw new AppException(500, "Server Error");
@@ -67,8 +65,8 @@ public class UserController {
             return "user/edit";
         }
 
-        Boolean status = userService.storeUser(user, null);
-        if (status) {
+        User userSave = userService.storeUser(user, null);
+        if (userSave != null) {
             return "redirect:/user";
         }
         throw new AppException(500, "Server Error");

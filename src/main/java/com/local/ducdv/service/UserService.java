@@ -31,7 +31,7 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    public Boolean storeUser(User user, Integer id) {
+    public User storeUser(User user, Integer id) {
         try {
             User userSave;
             if (id != null) {
@@ -44,12 +44,12 @@ public class UserService {
             } else {
                 userSave = user;
             }
-            userRepository.save(userSave);
-            return true;
+
+            return userRepository.save(userSave);
 
         } catch (Exception e) {
 
-            return false;
+            return null;
         }
     }
 
