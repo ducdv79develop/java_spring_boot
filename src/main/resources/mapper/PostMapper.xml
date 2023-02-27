@@ -290,4 +290,12 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="joinPostComment" resultType="com.local.ducdv.entity.Post">
+--     select * from posts;
+    select posts.*, comments.content as comment_content, users.name as user_name, users.email as user_email from posts
+    left join comments on comments.post_id = posts.id
+    left join users on posts.user_id = users.id
+    order by posts.id DESC
+  </select>
 </mapper>

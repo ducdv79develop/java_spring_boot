@@ -110,4 +110,6 @@ public interface PostMapper {
 	@Update({ "update posts", "set user_id = #{userId,jdbcType=INTEGER},", "title = #{title,jdbcType=VARCHAR},",
 			"date = #{date,jdbcType=TIMESTAMP}", "where id = #{id,jdbcType=BIGINT}" })
 	int updateByPrimaryKey(Post row);
+
+	List<Post> joinPostComment(PostExample example);
 }

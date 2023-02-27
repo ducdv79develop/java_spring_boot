@@ -1,5 +1,6 @@
 package com.local.ducdv.api;
 
+import com.local.ducdv.config.AspectTrackTime;
 import com.local.ducdv.dto.ApiResponseDto;
 import com.local.ducdv.dto.ApiResponseValidationDto;
 import com.local.ducdv.entity.Post;
@@ -23,9 +24,10 @@ public class PostApiController {
     @Autowired
     PostMapper postMapper;
     @GetMapping("/lists")
+//    @AspectTrackTime
     public ResponseEntity<?> listPost() {
 
-        List<Post> posts = postMapper.selectByExample(new PostExample());
+        List<Post> posts = postMapper.joinPostComment(new PostExample());
         ApiResponseDto apiResponseDto = new ApiResponseDto(ResponseStatusCode.OK, "success", posts.toArray());
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }
