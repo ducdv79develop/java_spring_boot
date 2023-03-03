@@ -1,14 +1,13 @@
 package com.local.ducdv.util;
 
-import com.local.ducdv.api.UploadCsvApiController;
+import java.nio.charset.StandardCharsets;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.charset.StandardCharsets;
-
 
 public class StringCustomUtils {
-    private static final Logger logger = LoggerFactory.getLogger(UploadCsvApiController.class);
+    private static final Logger logger = LoggerFactory.getLogger(StringCustomUtils.class);
 
     public static String removeCharAt(String s, int pos) {
         return s.substring(0, pos) + s.substring(pos + 1);

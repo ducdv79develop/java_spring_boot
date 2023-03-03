@@ -1,10 +1,17 @@
 package com.local.ducdv.mapper;
 
-import com.local.ducdv.entity.Comment;
-import com.local.ducdv.entity.CommentExample;
 import java.util.List;
 
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
+import com.local.ducdv.entity.Comment;
+import com.local.ducdv.entity.CommentExample;
 
 @Mapper
 public interface CommentMapper {

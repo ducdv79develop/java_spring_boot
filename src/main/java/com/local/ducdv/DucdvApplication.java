@@ -1,9 +1,10 @@
 package com.local.ducdv;
 
-import com.local.ducdv.config.FileStorageProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+
+import com.local.ducdv.config.FileStorageProperties;
 
 @SpringBootApplication
 @EnableConfigurationProperties({

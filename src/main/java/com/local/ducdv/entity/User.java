@@ -1,11 +1,16 @@
 package com.local.ducdv.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-@Table(name = "users")
+import java.util.Date;
+
 @Setter
 @Getter
 public class User {
@@ -20,4 +25,6 @@ public class User {
     @Size(max = 255, message = "{validations.user.email.max}")
     private String email;
     private String password;
+    private Date birthday;
+    private Boolean status;
 }

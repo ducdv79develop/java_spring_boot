@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.local.ducdv.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.local.ducdv.entity.User">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="birthday" jdbcType="DATE" property="birthday"/>
+        <result column="status" jdbcType="BOOLEAN" property="status"/>
+    </resultMap>
+    <select id="selectUserXml" resultType="com.local.ducdv.entity.User">
+        select users.*
+        from users
+        order by users.id DESC
+    </select>
+    <select id="selectUserByIdXml" parameterType="com.local.ducdv.entity.User" resultMap="BaseResultMap">
+        select users.* from users
+        <if test="id != null">
+            where users.id = #{id}
+        </if>
+    </select>
+    <insert id="insertUserXml" parameterType="com.local.ducdv.entity.User">
+        insert into users
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                #{birthday,jdbcType=DATE},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=BOOLEAN},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateUserXml" parameterType="com.local.ducdv.entity.User">
+        update posts
+        set
+        <if test="email != null">
+            email = #{email,jdbcType=VARCHAR},
+        </if>
+        <if test="name != null">
+            name = #{name,jdbcType=VARCHAR},
+        </if>
+        <if test="password != null">
+            password = #{password,jdbcType=VARCHAR},
+        </if>
+        <if test="birthday != null">
+            birthday = #{birthday,jdbcType=DATE},
+        </if>
+        <if test="status != null">
+            status = #{status,jdbcType=BOOLEAN},
+        </if>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deleteUserXml" parameterType="com.local.ducdv.entity.User">
+        delete from users where users.id = #{id}
+    </delete>
+
+</mapper>

@@ -1,5 +1,20 @@
 package com.local.ducdv.api;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.local.ducdv.dto.ApiResponseDto;
 import com.local.ducdv.dto.ApiResponseValidationDto;
 import com.local.ducdv.entity.Comment;
@@ -7,14 +22,6 @@ import com.local.ducdv.entity.CommentExample;
 import com.local.ducdv.mapper.CommentMapper;
 import com.local.ducdv.util.ResponseStatusCode;
 import com.local.ducdv.util.ValidationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/comment")

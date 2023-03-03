@@ -1,7 +1,10 @@
 package com.local.ducdv.dto;
 
 import com.local.ducdv.entity.User;
-import jakarta.validation.constraints.*;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,5 +1,15 @@
 package com.local.ducdv.api;
 
+import java.util.List;
+
+import com.local.ducdv.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
+
 import com.local.ducdv.dto.ApiResponseDto;
 import com.local.ducdv.dto.ApiResponseValidationDto;
 import com.local.ducdv.entity.User;
@@ -7,27 +17,30 @@ import com.local.ducdv.model.UserModel;
 import com.local.ducdv.service.UserService;
 import com.local.ducdv.util.ResponseStatusCode;
 import com.local.ducdv.util.ValidationUtils;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
 public class UserApiController {
-    private final UserService userService;
-    public UserApiController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserMapper userMapper;
 
     @GetMapping(path="/users")
     public @ResponseBody ResponseEntity<?> getAllUsers() {
-        List<UserModel> users = userService.getUserList();
-        ApiResponseDto apiResponseDto = new ApiResponseDto(ResponseStatusCode.OK, "success", users.toArray());
+        List<UserModel> userLists = userService.getUserList();
+        Object[] result = userLists.toArray();
+        ApiResponseDto apiResponseDto = new ApiResponseDto(ResponseStatusCode.OK, "success", result);
+
+        return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
+    }
+    @GetMapping(path="/users/{id}")
+    public @ResponseBody ResponseEntity<?> findById(@PathVariable Integer id) {
+        User user = userService.getUserByID(id);
+        Object[] result = {user};
+        ApiResponseDto apiResponseDto = new ApiResponseDto(ResponseStatusCode.OK, "success", result);
 
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }

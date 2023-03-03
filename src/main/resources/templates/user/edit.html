@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layouts/header.html :: header(#{user.edit})"></head>
+<head th:replace="~{layouts/header.html :: header(#{user.edit})}"></head>
 <body>
 <div class="container">
     <h1 class="text-center mb-3" th:text="#{user.edit}"></h1>
@@ -30,6 +30,6 @@
     </div>
 </div>
 
-<footer th:replace="layouts/footer.html :: footer"></footer>
+<footer th:replace="~{layouts/footer.html :: footer}"></footer>
 </body>
 </html>
