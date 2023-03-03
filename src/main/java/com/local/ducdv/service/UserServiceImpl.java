@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserModel> getUserList() {
-        List<User> users = userMapper.selectUser();
+        List<User> users = userMapper.selectUserXml();
         List<UserModel> userModels = new ArrayList<>();
         for (User user: users) {
             userModels.add(new UserModel(user));

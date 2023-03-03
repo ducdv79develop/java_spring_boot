@@ -44,4 +44,24 @@ public class UploadFileApiController {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping(value = "/excel", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> uploadExcel(@RequestParam("file") MultipartFile file) {
+        try {
+            FileDetailResponse fileDetailResponse = (FileDetailResponse) fileStorageService.storeFile(file);
+            if (fileDetailResponse.getFilepath() == null) {
+                return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            }
+            String filePath = fileDetailResponse.getFilepath();
+            String fullFilePath = fileDetailResponse.getDirectory() + "/" + fileDetailResponse.getFilename();
+            uploadFileService.handleFileExcel(filePath, fullFilePath);
+
+            Object[] data = {};
+            ApiResponseDto apiResponseDto = new ApiResponseDto(ResponseStatusCode.OK, "success", data);
+            return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

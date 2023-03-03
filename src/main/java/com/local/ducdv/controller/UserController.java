@@ -70,7 +70,7 @@ public class UserController {
             return "user/edit";
         }
 
-        User userSave = userService.storeUser(user, null);
+        User userSave = userService.storeUser(user, id);
         if (userSave != null) {
             return "redirect:/user";
         }

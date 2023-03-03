@@ -12,7 +12,7 @@
     <select id="selectUserXml" resultType="com.local.ducdv.entity.User">
         select users.*
         from users
-        order by users.id DESC
+        order by users.id ASC
     </select>
     <select id="selectUserByIdXml" parameterType="com.local.ducdv.entity.User" resultMap="BaseResultMap">
         select users.* from users
@@ -64,23 +64,24 @@
         </trim>
     </insert>
     <update id="updateUserXml" parameterType="com.local.ducdv.entity.User">
-        update posts
-        set
-        <if test="email != null">
-            email = #{email,jdbcType=VARCHAR},
-        </if>
-        <if test="name != null">
-            name = #{name,jdbcType=VARCHAR},
-        </if>
-        <if test="password != null">
-            password = #{password,jdbcType=VARCHAR},
-        </if>
-        <if test="birthday != null">
-            birthday = #{birthday,jdbcType=DATE},
-        </if>
-        <if test="status != null">
-            status = #{status,jdbcType=BOOLEAN},
-        </if>
+        update users
+        <set>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday,jdbcType=DATE},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=BOOLEAN},
+            </if>
+        </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
 

@@ -3,8 +3,8 @@ package com.local.ducdv.service;
 import com.local.ducdv.mapper.UserMapper;
 import com.local.ducdv.model.UserModel;
 import com.local.ducdv.util.CustomBaseFontPDF;
-import com.lowagie.text.*;
 import com.lowagie.text.Font;
+import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -13,12 +13,20 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,13 +39,9 @@ public class ExportFileService {
     @Autowired
     UserService userService;
 
-    public void handleExportCsv(String filename, HttpServletResponse response) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+    public void handleExportCsv(HttpServletResponse response) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
 
         List<UserModel> userLists = userService.getUserList();
-
-        response.setContentType("text/csv; charset=SJIS");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + filename + "\"");
 
         StatefulBeanToCsv<UserModel> writer =
                 new StatefulBeanToCsvBuilder<UserModel>
@@ -49,12 +53,8 @@ public class ExportFileService {
         writer.write(userLists);
     }
 
-    public void handleExportPDF(String filename, HttpServletResponse response) throws IOException {
+    public void handleExportPDF(HttpServletResponse response) throws IOException {
 
-        response.setContentType("application/pdf; charset=SJIS");
-        response.setCharacterEncoding("SJIS");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + filename + "\"");
 
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
@@ -73,14 +73,28 @@ public class ExportFileService {
         table.setWidths(new int[]{2, 3, 4, 2, 2});
         table.setSpacingBefore(5);
 
-        executeHeaderTable(table);
-        executeBodyTable(table);
+        executeHeaderTablePDF(table);
+        executeBodyTablePDF(table);
 
         document.add(table);
         document.close();
     }
 
-    private void executeHeaderTable(PdfPTable table) throws IOException {
+    public void handleExportExcel(HttpServletResponse response) throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("List Users");
+
+        executeWriteHeaderExcel(workbook, sheet);
+        executeWriteBodyExcel(workbook, sheet);
+
+        ServletOutputStream outputStream = response.getOutputStream();
+        workbook.write(outputStream);
+        workbook.close();
+
+        outputStream.close();
+    }
+
+    private void executeHeaderTablePDF(PdfPTable table) throws IOException {
         PdfPCell cell = new PdfPCell();
         cell.setBackgroundColor(Color.DARK_GRAY);
         cell.setPadding(5);
@@ -100,7 +114,7 @@ public class ExportFileService {
         table.addCell(cell);
     }
 
-    private void executeBodyTable(PdfPTable table) throws IOException {
+    private void executeBodyTablePDF(PdfPTable table) throws IOException {
 
         List<UserModel> userLists = userService.getUserList();
 
@@ -121,5 +135,66 @@ public class ExportFileService {
             cell.setPhrase(new Phrase(String.valueOf(userModel.status), font));
             table.addCell(cell);
         }
+    }
+
+    private void executeWriteHeaderExcel(XSSFWorkbook workbook, XSSFSheet sheet) {
+        CellStyle style = workbook.createCellStyle();
+        XSSFFont font = workbook.createFont();
+
+        Row row = sheet.createRow(0);
+
+        font.setBold(true);
+        font.setColor(IndexedColors.WHITE.getIndex());
+        font.setFontHeight(16);
+        style.setFont(font);
+        style.setFillBackgroundColor(IndexedColors.BLACK.index);
+        style.setFillPattern(FillPatternType.BIG_SPOTS);
+        style.setFillForegroundColor(IndexedColors.BLACK.getIndex());
+
+        createCell(sheet, row, 0, "ID", style);
+        createCell(sheet, row, 1, "NAME", style);
+        createCell(sheet, row, 2, "EMAIL", style);
+        createCell(sheet, row, 3, "BIRTHDAY", style);
+        createCell(sheet, row, 4, "STATUS", style);
+    }
+    private void executeWriteBodyExcel(XSSFWorkbook workbook, XSSFSheet sheet) {
+        List<UserModel> userLists = userService.getUserList();
+
+        int rowCount = 1;
+
+        CellStyle style = workbook.createCellStyle();
+        XSSFFont font = workbook.createFont();
+        font.setFontHeight(14);
+        style.setFont(font);
+
+        for (UserModel user : userLists) {
+            Row row = sheet.createRow(rowCount++);
+            int columnCount = 0;
+
+            createCell(sheet, row, columnCount++, user.id, style);
+            createCell(sheet, row, columnCount++, user.name, style);
+            createCell(sheet, row, columnCount++, user.email, style);
+            createCell(sheet, row, columnCount++, user.birthday, style);
+            createCell(sheet, row, columnCount++, user.status, style);
+        }
+    }
+
+
+    private void createCell(XSSFSheet sheet, Row row, int columnCount, Object valueOfCell, CellStyle style) {
+        sheet.autoSizeColumn(columnCount);
+        Cell cell = row.createCell(columnCount);
+        if (valueOfCell instanceof Integer) {
+            cell.setCellValue((Integer) valueOfCell);
+
+        } else if (valueOfCell instanceof Long) {
+            cell.setCellValue((Long) valueOfCell);
+
+        } else if (valueOfCell instanceof Boolean) {
+            cell.setCellValue((Boolean) valueOfCell);
+
+        } else {
+            cell.setCellValue((String) valueOfCell);
+        }
+        cell.setCellStyle(style);
     }
 }
