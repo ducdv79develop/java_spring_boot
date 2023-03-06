@@ -6,8 +6,8 @@ import com.local.ducdv.model.UserModel;
 import java.util.List;
 
 public interface UserService {
-    public List<UserModel> getUserList();
-    public User getUserByID(Integer id);
-    public User storeUser(User user, Integer id);
-    public Boolean deleteUser(Integer id);
+    List<UserModel> getUserList();
+    User getUserByID(Integer id);
+    User storeUser(User user, Integer id);
+    Boolean deleteUser(Integer id);
 }
