@@ -1,8 +1,8 @@
 package com.local.ducdv.model;
 
-import com.local.ducdv.entity.User;
-
 import java.text.SimpleDateFormat;
+
+import com.local.ducdv.entity.User;
 
 public class UserModel {
     public Integer id;

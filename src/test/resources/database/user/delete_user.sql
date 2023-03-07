@@ -1,1 +1,0 @@
-DELETE FROM users WHERE email = "testselectuser@usermapper.test" AND name = "Test Select User UserMapper";

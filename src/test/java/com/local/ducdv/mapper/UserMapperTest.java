@@ -1,7 +1,8 @@
 package com.local.ducdv.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ import com.local.ducdv.entity.User;
 public class UserMapperTest {
     @Autowired
     private UserMapper userMapper;
-    
+
     @Test
     public void test_selectUser() {
         List<User> users = userMapper.selectUser();
@@ -36,7 +37,7 @@ public class UserMapperTest {
         assertThat(user.getEmail()).isEqualTo("duc.dv1@beetechsoft.com");
         assertThat(user.getId()).isEqualTo(11);
     }
-    
+
     @Test
     public void test_selectUserByIdXml() {
         User user = userMapper.selectUserByIdXml(11).orElse(null);
@@ -47,17 +48,20 @@ public class UserMapperTest {
     }
 
 	@Test
-	@Sql(scripts = "/database/user/create_user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-	@Sql(scripts = "/database/user/delete_user.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+	@Sql(scripts = "/create_user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+	@Sql(scripts = "/delete_user.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 	public void test_insertUser() throws Exception {
 		List<User> users =  userMapper.selectUser();
 		boolean result = false;
 		for(User user: users) {
-			if (user.getEmail() == "testselectuser@usermapper.test" && user.getName() == "Test Select User UserMapper") {
+			System.out.println(user.getEmail());
+			
+			if (user.getEmail().equals("testselectuser@usermapper.test")) {
 				result = true;
 				break;
 			}
 		}
+		System.out.println(result);
 		assertTrue(result);
 	}
 }

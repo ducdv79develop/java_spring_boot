@@ -1,9 +1,9 @@
 package com.local.ducdv.service;
 
+import java.util.List;
+
 import com.local.ducdv.entity.User;
 import com.local.ducdv.model.UserModel;
-
-import java.util.List;
 
 public interface UserService {
     List<UserModel> getUserList();

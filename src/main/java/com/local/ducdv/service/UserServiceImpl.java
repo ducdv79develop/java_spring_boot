@@ -3,15 +3,15 @@ package com.local.ducdv.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.local.ducdv.exception.AppException;
-import com.local.ducdv.mapper.UserMapper;
-import com.local.ducdv.model.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.local.ducdv.entity.User;
+import com.local.ducdv.exception.AppException;
+import com.local.ducdv.mapper.UserMapper;
+import com.local.ducdv.model.UserModel;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,11 +31,13 @@ public class UserServiceImpl implements UserService {
         return userModels;
     }
 
-    public User getUserByID(Integer id) {
+    @Override
+	public User getUserByID(Integer id) {
         return userMapper.selectUserByIdXml(id).orElse(null);
     }
 
-    public User storeUser(User user, Integer id) {
+    @Override
+	public User storeUser(User user, Integer id) {
         try {
             User userSave;
             if (id != null) {
@@ -58,7 +60,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public Boolean deleteUser(Integer id) {
+    @Override
+	public Boolean deleteUser(Integer id) {
         User user = userMapper.selectUserById(id).orElse(null);
 
         if (user == null) {

@@ -2,6 +2,7 @@ package com.local.ducdv.api;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,15 +10,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
 import com.local.ducdv.entity.User;
+
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 public class UserApiControllerTest extends AbstractTest {
 	private final Integer ID = 22;
-	
+
     @Override
     @Before
     public void setUp() {
